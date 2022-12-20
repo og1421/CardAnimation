@@ -8,19 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var dragAmount = CGSize.zero
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-        }
-        .padding()
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+        LinearGradient(gradient: Gradient(colors: [Color.yellow, Color.red]), startPoint: .topLeading, endPoint: .bottomTrailing)
+            .frame(width: 300, height: 200)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .offset(dragAmount)
+            .gesture(
+                DragGesture()
+                    .onChanged{ dragAmount = $0.translation}
+                    .onEnded{_ in
+                        withAnimation{
+                            dragAmount = .zero
+                        }
+                    }
+            )
+        
     }
 }
